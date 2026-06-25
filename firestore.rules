@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All client access is denied — the app uses Firebase Admin SDK on the server.
+    // This follows OWASP guidance: never trust client-side Firestore rules alone for RBAC.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
