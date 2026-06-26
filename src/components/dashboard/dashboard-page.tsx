@@ -47,7 +47,7 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen bg-muted/30">
       <DashboardHeader />
-      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6">
+      <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 sm:py-8">
         <section aria-labelledby="metrics-heading">
           <h2 id="metrics-heading" className="sr-only">
             Dashboard metrics
@@ -55,13 +55,18 @@ export function DashboardPage() {
           <MetricsCards metrics={metrics} loading={metricsLoading} />
         </section>
         <section aria-labelledby="products-heading">
-          <div className="mb-4">
-            <h2 id="products-heading" className="text-xl font-semibold">
-              Products
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Browse, filter, and sort your product catalog
-            </p>
+          <div className="mb-5 flex items-end justify-between">
+            <div>
+              <h2
+                id="products-heading"
+                className="text-xl font-semibold tracking-tight"
+              >
+                Products
+              </h2>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                Browse, filter, and manage your product catalog
+              </p>
+            </div>
           </div>
           <ProductTable onMetricsRefresh={fetchMetrics} />
         </section>

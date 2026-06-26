@@ -43,20 +43,21 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Create account</CardTitle>
+    <Card className="w-full max-w-sm">
+      <CardHeader className="text-center">
+        <CardTitle className="text-xl">Create account</CardTitle>
         <CardDescription>
-          Sign up to manage products on the dashboard
+          Sign up to start managing your products
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email address</Label>
             <Input
               id="email"
               type="email"
+              placeholder="you@example.com"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -69,6 +70,7 @@ export function SignupForm() {
             <Input
               id="password"
               type="password"
+              placeholder="Minimum 8 characters"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -78,13 +80,21 @@ export function SignupForm() {
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading || submitting}>
-            {submitting ? "Creating account…" : "Sign up"}
+        <CardFooter className="mt-2 flex flex-col gap-4">
+          <Button
+            type="submit"
+            className="w-full"
+            size="lg"
+            disabled={loading || submitting}
+          >
+            {submitting ? "Creating account…" : "Create account"}
           </Button>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="text-foreground underline-offset-4 hover:underline">
+            <Link
+              href="/login"
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+            >
               Sign in
             </Link>
           </p>

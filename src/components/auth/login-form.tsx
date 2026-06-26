@@ -39,20 +39,21 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Sign in</CardTitle>
+    <Card className="w-full max-w-sm">
+      <CardHeader className="text-center">
+        <CardTitle className="text-xl">Sign in</CardTitle>
         <CardDescription>
-          Access your product management dashboard
+          Enter your credentials to access the dashboard
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email address</Label>
             <Input
               id="email"
               type="email"
+              placeholder="you@example.com"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -65,6 +66,7 @@ export function LoginForm() {
             <Input
               id="password"
               type="password"
+              placeholder="••••••••"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -73,13 +75,21 @@ export function LoginForm() {
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading || submitting}>
+        <CardFooter className="mt-2 flex flex-col gap-4">
+          <Button
+            type="submit"
+            className="w-full"
+            size="lg"
+            disabled={loading || submitting}
+          >
             {submitting ? "Signing in…" : "Sign in"}
           </Button>
-          <p className="text-sm text-muted-foreground">
-            No account?{" "}
-            <Link href="/signup" className="text-foreground underline-offset-4 hover:underline">
+          <p className="text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/signup"
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+            >
               Sign up
             </Link>
           </p>
