@@ -8,10 +8,10 @@
  *   npm run seed -- --force   # clear products collection and re-seed
  */
 
-const { readFileSync, existsSync } = require("fs");
-const { resolve } = require("path");
-const { cert, getApps, initializeApp } = require("firebase-admin/app");
-const { getFirestore } = require("firebase-admin/firestore");
+import { readFileSync, existsSync } from "fs";
+import { resolve } from "path";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 
 const COLLECTION = "products";
 const FORCE = process.argv.includes("--force");
@@ -193,7 +193,9 @@ async function seed() {
   console.log(`   Active: ${active} | Inactive: ${inactive}`);
   console.log(`   Active revenue total: $${revenue.toFixed(2)}`);
   console.log(`   createdBy: ${createdBy}`);
-  console.log("\n   Refresh your dashboard at http://localhost:3000/dashboard\n");
+  console.log(
+    "\n   Refresh your dashboard at http://localhost:3000/dashboard\n"
+  );
 }
 
 seed().catch((err) => {
