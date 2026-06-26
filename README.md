@@ -58,6 +58,20 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Sign up with an email listed in `ADMIN_EMAILS` for admin access; all other signups receive the **viewer** role.
 
+### 4. Seed demo data (optional)
+
+Populate the dashboard with 15 sample products:
+
+```bash
+npm run seed
+```
+
+To replace existing products:
+
+```bash
+npm run seed -- --force
+```
+
 ---
 
 ## Architecture overview
@@ -265,6 +279,7 @@ npm run build      # Production build
 npm run start      # Start production server
 npm run lint       # ESLint
 npm run check:env  # Validate environment variables
+npm run seed       # Seed demo products (use -- --force to replace)
 ```
 
 ---

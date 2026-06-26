@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:env": "node --env-file=.env.local scripts/check-env.js"
+    "check:env": "node --env-file=.env.local scripts/check-env.js",
+    "seed": "node --env-file=.env.local scripts/seed-demo-data.js"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.0",

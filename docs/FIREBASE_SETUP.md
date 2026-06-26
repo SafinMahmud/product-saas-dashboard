@@ -100,6 +100,7 @@ If you skip this step, Firestore may prompt you to create indexes when you first
 ```bash
 npm install
 node scripts/check-env.js   # optional sanity check (load .env.local first)
+npm run seed                # optional — add 15 demo products
 npm run dev
 ```
 
