@@ -4,7 +4,6 @@ import { createProduct, listProducts } from "@/lib/data/products";
 import {
   productListQuerySchema,
   productSchema,
-  productUpdateSchema,
 } from "@/lib/validation/schemas";
 import { withAdmin, withAuth } from "@/lib/api/helpers";
 

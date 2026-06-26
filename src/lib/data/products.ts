@@ -1,5 +1,4 @@
 import {
-  FieldPath,
   type DocumentSnapshot,
   type Query,
 } from "firebase-admin/firestore";

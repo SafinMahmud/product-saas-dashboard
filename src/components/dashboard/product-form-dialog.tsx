@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,32 +29,19 @@ interface ProductFormDialogProps {
   onSaved: () => void;
 }
 
-export function ProductFormDialog({
-  open,
-  onOpenChange,
-  product,
-  onSaved,
-}: ProductFormDialogProps) {
-  const isEdit = Boolean(product);
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [status, setStatus] = useState<ProductStatus>("active");
-  const [submitting, setSubmitting] = useState(false);
+interface ProductFormFieldsProps {
+  product: Product | null;
+  onSaved: () => void;
+  onCancel: () => void;
+}
 
-  useEffect(() => {
-    if (product) {
-      setName(product.name);
-      setCategory(product.category);
-      setPrice(String(product.price));
-      setStatus(product.status);
-    } else {
-      setName("");
-      setCategory("");
-      setPrice("");
-      setStatus("active");
-    }
-  }, [product, open]);
+function ProductFormFields({ product, onSaved, onCancel }: ProductFormFieldsProps) {
+  const isEdit = Boolean(product);
+  const [name, setName] = useState(product?.name ?? "");
+  const [category, setCategory] = useState(product?.category ?? "");
+  const [price, setPrice] = useState(product ? String(product.price) : "");
+  const [status, setStatus] = useState<ProductStatus>(product?.status ?? "active");
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -92,6 +79,72 @@ export function ProductFormDialog({
   }
 
   return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="product-name">Name</Label>
+        <Input
+          id="product-name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          maxLength={200}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="product-category">Category</Label>
+        <Input
+          id="product-category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+          maxLength={100}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="product-price">Price (USD)</Label>
+        <Input
+          id="product-price"
+          type="number"
+          min="0"
+          step="0.01"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="product-status">Status</Label>
+        <Select value={status} onValueChange={(v) => v && setStatus(v as ProductStatus)}>
+          <SelectTrigger id="product-status">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="inactive">Inactive</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <DialogFooter>
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={submitting}>
+          {submitting ? "Saving…" : isEdit ? "Save changes" : "Create product"}
+        </Button>
+      </DialogFooter>
+    </form>
+  );
+}
+
+export function ProductFormDialog({
+  open,
+  onOpenChange,
+  product,
+  onSaved,
+}: ProductFormDialogProps) {
+  const isEdit = Boolean(product);
+
+  return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
@@ -102,60 +155,14 @@ export function ProductFormDialog({
               : "Fill in the details to create a new product."}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="product-name">Name</Label>
-            <Input
-              id="product-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              maxLength={200}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="product-category">Category</Label>
-            <Input
-              id="product-category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-              maxLength={100}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="product-price">Price (USD)</Label>
-            <Input
-              id="product-price"
-              type="number"
-              min="0"
-              step="0.01"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="product-status">Status</Label>
-            <Select value={status} onValueChange={(v) => v && setStatus(v as ProductStatus)}>
-              <SelectTrigger id="product-status">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={submitting}>
-              {submitting ? "Saving…" : isEdit ? "Save changes" : "Create product"}
-            </Button>
-          </DialogFooter>
-        </form>
+        {open && (
+          <ProductFormFields
+            key={product?.id ?? "new"}
+            product={product}
+            onSaved={onSaved}
+            onCancel={() => onOpenChange(false)}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -86,10 +86,48 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
   }, []);
 
   useEffect(() => {
-    setCursor(null);
-    fetchProducts({ append: false, cursorOverride: null });
-    fetchCategories();
-  }, [search, category, status, sortBy, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+    let cancelled = false;
+
+    async function loadProducts() {
+      setLoading(true);
+      const params = new URLSearchParams();
+      params.set("limit", "10");
+      if (search) params.set("search", search);
+      if (category !== "all") params.set("category", category);
+      if (status !== "all") params.set("status", status);
+      params.set("sortBy", sortBy);
+      params.set("sortOrder", sortOrder);
+
+      try {
+        const res = await fetch(`/api/products?${params}`);
+        if (!res.ok) throw new Error("Failed to fetch products");
+        const data = await res.json();
+        if (!cancelled) {
+          setProducts(data.products);
+          setNextCursor(data.nextCursor);
+          setCursor(null);
+        }
+      } catch {
+        if (!cancelled) toast.error("Failed to load products");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    async function loadCategories() {
+      const res = await fetch("/api/metrics?type=categories");
+      if (!cancelled && res.ok) {
+        const data = await res.json();
+        setCategories(data.categories ?? []);
+      }
+    }
+
+    void loadProducts();
+    void loadCategories();
+    return () => {
+      cancelled = true;
+    };
+  }, [search, category, status, sortBy, sortOrder]);
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this product?")) return;

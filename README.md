@@ -25,7 +25,7 @@ npm install
 
 1. In Firebase Console → Project Settings → **General**, copy your web app config.
 2. In Project Settings → **Service accounts**, generate a new private key (JSON).
-3. Copy `.env.example` to `.env.local` and fill in values:
+3. Copy `.env.example` to `.env.local` and fill in values (see **[docs/FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md)** for full Firebase setup):
 
 ```bash
 cp .env.example .env.local

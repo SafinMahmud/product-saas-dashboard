@@ -23,8 +23,26 @@ export function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    fetchMetrics();
-  }, [fetchMetrics]);
+    let cancelled = false;
+
+    async function loadMetrics() {
+      try {
+        const res = await fetch("/api/metrics");
+        if (!cancelled && res.ok) {
+          setMetrics(await res.json());
+        }
+      } finally {
+        if (!cancelled) {
+          setMetricsLoading(false);
+        }
+      }
+    }
+
+    void loadMetrics();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-muted/30">
