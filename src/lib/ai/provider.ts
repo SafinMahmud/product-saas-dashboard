@@ -5,7 +5,7 @@ export function getGroqStreamModel() {
 }
 
 export function getGroqStructuredModel() {
-  return groq("llama-3.3-70b-versatile");
+  return groq("meta-llama/llama-4-scout-17b-16e-instruct");
 }
 
 export function getAiConfigError() {
