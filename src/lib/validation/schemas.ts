@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const productSchema = z.object({
   name: z.string().min(1, "Name is required").max(200),
+  description: z.string().max(1000).optional().default(""),
   category: z.string().min(1, "Category is required").max(100),
   price: z.coerce.number().min(0, "Price must be non-negative"),
   status: z.enum(["active", "inactive"]),

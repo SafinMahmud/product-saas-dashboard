@@ -4,7 +4,7 @@ import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 const PUBLIC_PATHS = ["/login", "/signup"];
 const AUTH_API_PATHS = ["/api/auth/session", "/api/auth/logout"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (

@@ -12,6 +12,7 @@ export interface UserProfile {
 export interface Product {
   id: string;
   name: string;
+  description: string;
   category: string;
   price: number;
   status: ProductStatus;
@@ -22,6 +23,7 @@ export interface Product {
 
 export interface ProductInput {
   name: string;
+  description?: string;
   category: string;
   price: number;
   status: ProductStatus;

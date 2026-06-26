@@ -19,6 +19,7 @@ function docToProduct(doc: DocumentSnapshot): Product {
   return {
     id: doc.id,
     name: data.name,
+    description: data.description ?? "",
     category: data.category,
     price: data.price,
     status: data.status,
@@ -101,6 +102,7 @@ export async function createProduct(
   const ref = getAdminDb().collection(COLLECTION).doc();
   const data = {
     ...input,
+    description: input.description ?? "",
     createdAt: now,
     updatedAt: now,
     createdBy: userId,

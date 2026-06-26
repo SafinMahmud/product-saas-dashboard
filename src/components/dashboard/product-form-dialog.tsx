@@ -20,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AiDescriptionButton } from "@/components/dashboard/ai-description-button";
+import { AiCategoryButton } from "@/components/dashboard/ai-category-button";
 import type { Product, ProductStatus } from "@/lib/types";
 
 interface ProductFormDialogProps {
@@ -38,6 +40,7 @@ interface ProductFormFieldsProps {
 function ProductFormFields({ product, onSaved, onCancel }: ProductFormFieldsProps) {
   const isEdit = Boolean(product);
   const [name, setName] = useState(product?.name ?? "");
+  const [description, setDescription] = useState(product?.description ?? "");
   const [category, setCategory] = useState(product?.category ?? "");
   const [price, setPrice] = useState(product ? String(product.price) : "");
   const [status, setStatus] = useState<ProductStatus>(product?.status ?? "active");
@@ -49,6 +52,7 @@ function ProductFormFields({ product, onSaved, onCancel }: ProductFormFieldsProp
 
     const payload = {
       name: name.trim(),
+      description: description.trim(),
       category: category.trim(),
       price: parseFloat(price),
       status,
@@ -88,16 +92,41 @@ function ProductFormFields({ product, onSaved, onCancel }: ProductFormFieldsProp
           onChange={(e) => setName(e.target.value)}
           required
           maxLength={200}
+          placeholder="e.g. Wireless Bluetooth Headphones"
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="product-category">Category</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="product-description">Description</Label>
+          <AiDescriptionButton
+            name={name}
+            category={category}
+            price={price}
+            onGenerated={setDescription}
+          />
+        </div>
+        <textarea
+          id="product-description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          maxLength={1000}
+          rows={3}
+          placeholder="Product description (optional — or use AI to generate)"
+          className="flex w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+        />
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="product-category">Category</Label>
+          <AiCategoryButton name={name} onSuggested={setCategory} />
+        </div>
         <Input
           id="product-category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
           maxLength={100}
+          placeholder="e.g. Electronics"
         />
       </div>
       <div className="space-y-2">
@@ -110,6 +139,7 @@ function ProductFormFields({ product, onSaved, onCancel }: ProductFormFieldsProp
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           required
+          placeholder="0.00"
         />
       </div>
       <div className="space-y-2">
@@ -146,13 +176,13 @@ export function ProductFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>{isEdit ? "Edit product" : "Add product"}</DialogTitle>
           <DialogDescription>
             {isEdit
               ? "Update the product details below."
-              : "Fill in the details to create a new product."}
+              : "Fill in the details to create a new product. Use AI to auto-generate descriptions and categories."}
           </DialogDescription>
         </DialogHeader>
         {open && (
