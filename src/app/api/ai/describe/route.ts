@@ -6,7 +6,7 @@ import { logger } from "@/lib/logging/logger";
 import {
   getAiConfigError,
   getAiRateLimitError,
-  getGroqModel,
+  getGroqStreamModel,
   isAiRateLimitError,
 } from "@/lib/ai/provider";
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const result = streamText({
-      model: getGroqModel(),
+      model: getGroqStreamModel(),
       temperature: 0.7,
       system:
         "You are a product copywriter for an e-commerce SaaS platform. " +

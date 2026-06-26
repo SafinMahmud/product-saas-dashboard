@@ -7,7 +7,7 @@ import { getCategories } from "@/lib/data/products";
 import {
   getAiConfigError,
   getAiRateLimitError,
-  getGroqModel,
+  getGroqStructuredModel,
   isAiRateLimitError,
 } from "@/lib/ai/provider";
 import {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     try {
       const { object } = await generateObject({
-        model: getGroqModel(),
+        model: getGroqStructuredModel(),
         schema: aiProductFilterSchema,
         system:
           "You parse natural language product catalog queries into structured database filters. " +

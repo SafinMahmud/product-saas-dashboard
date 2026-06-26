@@ -6,7 +6,7 @@ import { logger } from "@/lib/logging/logger";
 import {
   getAiConfigError,
   getAiRateLimitError,
-  getGroqModel,
+  getGroqStructuredModel,
   isAiRateLimitError,
 } from "@/lib/ai/provider";
 
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     try {
       const { object } = await generateObject({
-        model: getGroqModel(),
+        model: getGroqStructuredModel(),
         schema: z.object({
           category: z.string().describe("The best-fit product category"),
           confidence: z

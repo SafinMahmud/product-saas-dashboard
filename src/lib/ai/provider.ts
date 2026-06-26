@@ -1,9 +1,11 @@
 import { groq } from "@ai-sdk/groq";
 
-export const GROQ_MODEL = "llama-3.1-8b-instant";
+export function getGroqStreamModel() {
+  return groq("llama-3.1-8b-instant");
+}
 
-export function getGroqModel() {
-  return groq(GROQ_MODEL);
+export function getGroqStructuredModel() {
+  return groq("llama-3.3-70b-versatile");
 }
 
 export function getAiConfigError() {
