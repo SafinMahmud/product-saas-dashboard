@@ -203,9 +203,31 @@ There is no bulk delete or bulk edit. Products are managed one at a time. This i
 
 ---
 
-## AI Features (Admin)
+## AI Features
 
-AI features are available when creating or editing products. They require a `GOOGLE_GENERATIVE_AI_API_KEY` to be configured on the server. If not configured, the buttons show a "not configured" message. The AI is powered by Google Gemini, which has a generous free tier (15 requests/minute, 1M tokens/day).
+AI features require a `GROQ_API_KEY` on the server. Powered by Groq (`llama-3.1-8b-instant`) — free tier: 30 requests/minute, 14,400 requests/day.
+
+### Natural Language Dashboard Filtering
+
+Filter the product table by typing plain English instead of using dropdowns.
+
+1. Go to the **Products** section on the dashboard
+2. Type a query in the search bar at the top, e.g.:
+   - *"Show me all active products under $20"*
+   - *"What are our inactive products?"*
+   - *"Cheapest food and beverage items"*
+3. Click **Ask AI**
+4. The AI parses your query into structured filters and applies them to the table
+5. A summary chip appears showing what was understood (e.g. *"Showing active products, under $20"*)
+6. Click **X** on the chip to clear the AI filter and reset the table
+
+The manual dropdown filters (category, status, sort) still work and update when AI applies a filter.
+
+---
+
+## AI Features (Admin — Product Form)
+
+AI features are available when creating or editing products. They require a `GROQ_API_KEY` to be configured on the server. If not configured, the buttons show a "not configured" message. The AI is powered by Groq (`llama-3.1-8b-instant`), which has a generous free tier (30 requests/minute, 14,400 requests/day).
 
 ### AI Product Description
 
@@ -244,7 +266,7 @@ Automatically suggests the best product category based on the product name.
 
 ### When AI is unavailable
 
-If the server doesn't have a `GOOGLE_GENERATIVE_AI_API_KEY` configured:
+If the server doesn't have a `GROQ_API_KEY` configured:
 - The AI buttons still appear but show a toast message when clicked: *"AI features are not configured"*
 - If you hit the free-tier rate limit, a clear message explains the limit and suggests waiting
 - All other functionality works normally — AI is an optional enhancement
@@ -293,6 +315,6 @@ The dashboard is fully responsive:
 | "Invalid email or password" | Check credentials. If you forgot your password, delete and recreate the account via Firebase Console. |
 | Form fields are disabled | The app is still loading your session. Wait a moment and try again. |
 | "Failed to load products" | Check that Firestore is enabled in your Firebase project. Check the browser console for errors. |
-| AI buttons say "unavailable" | The server needs `GOOGLE_GENERATIVE_AI_API_KEY` in `.env.local`. Get a free key from [Google AI Studio](https://aistudio.google.com/apikey). |
+| AI buttons say "unavailable" | The server needs `GROQ_API_KEY` in `.env.local`. Get a free key from [Groq Console](https://console.groq.com/keys). |
 | Session expired | Sign in again. Sessions last 5 days. |
 | "Could not create account" | The email may already be registered. Try signing in, or use a different email. |

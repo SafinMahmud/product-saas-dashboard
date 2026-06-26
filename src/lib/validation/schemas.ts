@@ -26,6 +26,8 @@ export const productListQuerySchema = z.object({
   search: z.string().optional(),
   category: z.string().optional(),
   status: z.enum(["active", "inactive"]).optional(),
+  priceMin: z.coerce.number().min(0).optional(),
+  priceMax: z.coerce.number().min(0).optional(),
   sortBy: z.enum(["name", "price", "createdAt"]).optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),
 });

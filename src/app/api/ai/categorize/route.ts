@@ -1,17 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
-import { google } from "@ai-sdk/google";
 import { z } from "zod";
 import { withAuth, jsonError } from "@/lib/api/helpers";
 import { logger } from "@/lib/logging/logger";
+import {
+  getAiConfigError,
+  getAiRateLimitError,
+  getGroqModel,
+  isAiRateLimitError,
+} from "@/lib/ai/provider";
 
 export async function POST(request: NextRequest) {
   return withAuth(request, async () => {
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-      return jsonError(
-        "AI features are not configured. Please set GOOGLE_GENERATIVE_AI_API_KEY.",
-        503
-      );
+    if (!process.env.GROQ_API_KEY) {
+      return jsonError(getAiConfigError(), 503);
     }
 
     const { name } = await request.json();
@@ -22,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     try {
       const { object } = await generateObject({
-        model: google("gemini-2.0-flash"),
+        model: getGroqModel(),
         schema: z.object({
           category: z.string().describe("The best-fit product category"),
           confidence: z
@@ -48,15 +50,8 @@ export async function POST(request: NextRequest) {
       const message = err instanceof Error ? err.message : String(err);
       logger.error("AI categorize failed", { error: message });
 
-      if (
-        message.includes("429") ||
-        message.includes("quota") ||
-        message.includes("rate")
-      ) {
-        return jsonError(
-          "AI rate limit reached. The free tier allows 15 requests/minute. Please wait a moment and try again.",
-          429
-        );
+      if (isAiRateLimitError(err)) {
+        return jsonError(getAiRateLimitError(), 429);
       }
 
       return jsonError("AI generation failed. Please try again later.", 500);

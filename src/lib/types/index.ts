@@ -35,6 +35,8 @@ export interface ProductListParams {
   search?: string;
   category?: string;
   status?: ProductStatus;
+  priceMin?: number;
+  priceMax?: number;
   sortBy?: "name" | "price" | "createdAt";
   sortOrder?: "asc" | "desc";
 }

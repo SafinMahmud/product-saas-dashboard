@@ -39,7 +39,7 @@ cp .env.example .env.local
 | `FIREBASE_PRIVATE_KEY` | Service account JSON `private_key` (keep `\n` escapes) |
 | `GOOGLE_APPLICATION_CREDENTIALS` | **Alternative:** path to service account JSON file (takes precedence) |
 | `ADMIN_EMAILS` | Comma-separated emails that get **admin** role on signup |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | *Optional* — enables AI description and category features (free tier: 15 RPM) |
+| `GROQ_API_KEY` | *Optional* — enables AI description and category features (Groq free tier: 30 RPM) |
 
 4. Deploy Firestore rules and indexes (optional but recommended):
 
@@ -173,7 +173,7 @@ Single-field indexes are auto-created by Firestore for all fields.
 | **Client Firestore access** | **Denied entirely** — `firestore.rules` blocks all client reads/writes. All data flows through the server API. |
 | **Input validation** | Zod schemas validate all API request bodies server-side. |
 | **Admin assignment** | Only emails in `ADMIN_EMAILS` env var receive admin on signup — not user-selectable. |
-| **AI safety** | AI endpoints require authentication. Gracefully disabled when `GOOGLE_GENERATIVE_AI_API_KEY` is absent (503 with descriptive message). Rate-limit and quota errors return user-friendly messages. |
+| **AI safety** | AI endpoints require authentication. Gracefully disabled when `GROQ_API_KEY` is absent (503 with descriptive message). Rate-limit and quota errors return user-friendly messages. |
 
 **Defense in depth:** Viewers cannot create/edit/delete even if they craft direct API requests — the server returns `403 Forbidden`.
 
@@ -197,7 +197,7 @@ Single-field indexes are auto-created by Firestore for all fields.
 - [x] **Role-based UI** — admin sees add/edit/delete controls; viewer gets read-only interface. Enforced server-side.
 - [x] **Search & cursor pagination** — Firestore cursor-based pagination via `startAfter`, text search, category/status filters, multi-field sorting
 - [x] **CI/CD** — GitHub Actions workflow (lint + build on push/PR to main)
-- [x] **AI-powered features** — auto-generate product descriptions (streaming) and smart category suggestions (structured output) via Vercel AI SDK + OpenAI
+- [x] **AI-powered features** — product descriptions, category suggestions, and natural language dashboard filtering via Vercel AI SDK + Groq
 - [x] **Observability** — structured JSON logging in the API layer (`lib/logging/logger.ts`)
 
 ---
@@ -205,10 +205,13 @@ Single-field indexes are auto-created by Firestore for all fields.
 ## AI-powered features
 
 ### Product description generation
-When creating or editing a product, admins can click **"AI describe"** to auto-generate a compelling product description. Uses GPT-4o-mini via the Vercel AI SDK with streaming for real-time feedback.
+When creating or editing a product, admins can click **"AI describe"** to auto-generate a compelling product description. Uses Groq (`llama-3.1-8b-instant`) via the Vercel AI SDK with streaming for real-time feedback.
 
 ### Smart category suggestions
 Click **"AI suggest"** next to the category field. The AI analyzes the product name and returns a best-fit category with confidence score and alternative suggestions. Uses Zod-validated structured output.
+
+### Natural language dashboard filtering
+Type a plain-English query in the dashboard search bar (e.g. *"Show me all active products under $20"*). The LLM parses it into a validated filter schema (`status`, `category`, `priceMin`/`priceMax`, `sortBy`), which is safely applied in the data access layer — never executing raw user input against Firestore.
 
 ### Productionisation plan
 To ship these AI features safely at scale:

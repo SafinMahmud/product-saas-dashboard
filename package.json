@@ -11,7 +11,7 @@
     "seed": "node --env-file=.env.local scripts/seed-demo-data.mjs"
   },
   "dependencies": {
-    "@ai-sdk/google": "^4.0.0",
+    "@ai-sdk/groq": "^4.0.0",
     "@base-ui/react": "^1.6.0",
     "ai": "^7.0.2",
     "class-variance-authority": "^0.7.1",

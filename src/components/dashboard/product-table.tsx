@@ -24,6 +24,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ProductFormDialog } from "@/components/dashboard/product-form-dialog";
+import { AiFilterBar } from "@/components/dashboard/ai-filter-bar";
+import type { ParsedProductFilters } from "@/lib/ai/product-filter-schema";
 import type { Product } from "@/lib/types";
 
 interface ProductTableProps {
@@ -37,6 +39,9 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [status, setStatus] = useState<string>("all");
+  const [priceMin, setPriceMin] = useState<number | undefined>();
+  const [priceMax, setPriceMax] = useState<number | undefined>();
+  const [aiFilterSummary, setAiFilterSummary] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"name" | "price" | "createdAt">("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [cursor, setCursor] = useState<string | null>(null);
@@ -53,6 +58,8 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
       if (search) params.set("search", search);
       if (category !== "all") params.set("category", category);
       if (status !== "all") params.set("status", status);
+      if (priceMin !== undefined) params.set("priceMin", String(priceMin));
+      if (priceMax !== undefined) params.set("priceMax", String(priceMax));
       params.set("sortBy", sortBy);
       params.set("sortOrder", sortOrder);
 
@@ -74,7 +81,7 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
         setLoading(false);
       }
     },
-    [search, category, status, sortBy, sortOrder, cursor]
+    [search, category, status, priceMin, priceMax, sortBy, sortOrder, cursor]
   );
 
   const fetchCategories = useCallback(async () => {
@@ -95,6 +102,8 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
       if (search) params.set("search", search);
       if (category !== "all") params.set("category", category);
       if (status !== "all") params.set("status", status);
+      if (priceMin !== undefined) params.set("priceMin", String(priceMin));
+      if (priceMax !== undefined) params.set("priceMax", String(priceMax));
       params.set("sortBy", sortBy);
       params.set("sortOrder", sortOrder);
 
@@ -127,7 +136,31 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
     return () => {
       cancelled = true;
     };
-  }, [search, category, status, sortBy, sortOrder]);
+  }, [search, category, status, priceMin, priceMax, sortBy, sortOrder]);
+
+  function handleAiFilter(filters: ParsedProductFilters) {
+    setSearch(filters.search ?? "");
+    setCategory(filters.category ?? "all");
+    setStatus(filters.status ?? "all");
+    setPriceMin(filters.priceMin);
+    setPriceMax(filters.priceMax);
+    if (filters.sortBy) setSortBy(filters.sortBy);
+    if (filters.sortOrder) setSortOrder(filters.sortOrder);
+    setAiFilterSummary(filters.summary);
+    setCursor(null);
+  }
+
+  function handleClearAiFilter() {
+    setSearch("");
+    setCategory("all");
+    setStatus("all");
+    setPriceMin(undefined);
+    setPriceMax(undefined);
+    setSortBy("createdAt");
+    setSortOrder("desc");
+    setAiFilterSummary(null);
+    setCursor(null);
+  }
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this product?")) return;
@@ -164,6 +197,12 @@ export function ProductTable({ onMetricsRefresh }: ProductTableProps) {
 
   return (
     <div className="space-y-4">
+      <AiFilterBar
+        activeSummary={aiFilterSummary}
+        onApply={handleAiFilter}
+        onClear={handleClearAiFilter}
+      />
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
           <Input

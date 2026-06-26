@@ -38,12 +38,17 @@ export async function listProducts(
     search,
     category,
     status,
+    priceMin,
+    priceMax,
     sortBy = "createdAt",
     sortOrder = "desc",
   } = params;
 
   const db = getAdminDb();
-  const fetchLimit = search ? Math.min(limit * 5, 100) : limit + 1;
+  const needsInMemoryFilter = Boolean(
+    search || priceMin !== undefined || priceMax !== undefined
+  );
+  const fetchLimit = needsInMemoryFilter ? Math.min(limit * 5, 100) : limit + 1;
 
   let products: Product[];
 
@@ -97,6 +102,13 @@ export async function listProducts(
         p.name.toLowerCase().includes(term) ||
         p.category.toLowerCase().includes(term)
     );
+  }
+
+  if (priceMin !== undefined) {
+    products = products.filter((p) => p.price >= priceMin);
+  }
+  if (priceMax !== undefined) {
+    products = products.filter((p) => p.price <= priceMax);
   }
 
   const hasMore = products.length > limit;
