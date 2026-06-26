@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { SESSION_COOKIE_NAME } from "@/lib/firebase/admin";
+import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 
 const PUBLIC_PATHS = ["/login", "/signup"];
 const AUTH_API_PATHS = ["/api/auth/session", "/api/auth/logout"];

@@ -1,6 +1,9 @@
 import { cert, getApps, initializeApp, type App } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { SESSION_COOKIE_NAME, SESSION_EXPIRY_MS } from "@/lib/auth/constants";
+
+export { SESSION_COOKIE_NAME, SESSION_EXPIRY_MS };
 
 let adminApp: App;
 
@@ -30,6 +33,3 @@ export function getAdminAuth() {
 export function getAdminDb() {
   return getFirestore(getAdminApp());
 }
-
-export const SESSION_COOKIE_NAME = "__session";
-export const SESSION_EXPIRY_MS = 60 * 60 * 24 * 5 * 1000; // 5 days

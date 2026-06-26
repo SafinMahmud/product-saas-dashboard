@@ -4,8 +4,8 @@ import type { DecodedIdToken } from "firebase-admin/auth";
 import {
   getAdminAuth,
   getAdminDb,
-  SESSION_COOKIE_NAME,
 } from "@/lib/firebase/admin";
+import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import type { AuthSession, UserRole } from "@/lib/types";
 
 async function getRoleForUser(uid: string): Promise<UserRole> {
