@@ -205,7 +205,7 @@ There is no bulk delete or bulk edit. Products are managed one at a time. This i
 
 ## AI Features (Admin)
 
-AI features are available when creating or editing products. They require an `OPENAI_API_KEY` to be configured on the server. If not configured, the buttons show a "not configured" message.
+AI features are available when creating or editing products. They require a `GOOGLE_GENERATIVE_AI_API_KEY` to be configured on the server. If not configured, the buttons show a "not configured" message. The AI is powered by Google Gemini, which has a generous free tier (15 requests/minute, 1M tokens/day).
 
 ### AI Product Description
 
@@ -244,8 +244,9 @@ Automatically suggests the best product category based on the product name.
 
 ### When AI is unavailable
 
-If the server doesn't have an `OPENAI_API_KEY` configured:
-- The AI buttons still appear but show a message when clicked: *"AI features are disabled — OPENAI_API_KEY not configured"*
+If the server doesn't have a `GOOGLE_GENERATIVE_AI_API_KEY` configured:
+- The AI buttons still appear but show a toast message when clicked: *"AI features are not configured"*
+- If you hit the free-tier rate limit, a clear message explains the limit and suggests waiting
 - All other functionality works normally — AI is an optional enhancement
 
 ---
@@ -292,6 +293,6 @@ The dashboard is fully responsive:
 | "Invalid email or password" | Check credentials. If you forgot your password, delete and recreate the account via Firebase Console. |
 | Form fields are disabled | The app is still loading your session. Wait a moment and try again. |
 | "Failed to load products" | Check that Firestore is enabled in your Firebase project. Check the browser console for errors. |
-| AI buttons say "unavailable" | The server needs `OPENAI_API_KEY` in `.env.local`. Ask your administrator. |
+| AI buttons say "unavailable" | The server needs `GOOGLE_GENERATIVE_AI_API_KEY` in `.env.local`. Get a free key from [Google AI Studio](https://aistudio.google.com/apikey). |
 | Session expired | Sign in again. Sessions last 5 days. |
 | "Could not create account" | The email may already be registered. Try signing in, or use a different email. |

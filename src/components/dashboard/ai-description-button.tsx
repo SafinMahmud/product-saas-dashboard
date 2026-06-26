@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 interface AiDescriptionButtonProps {
@@ -32,9 +33,9 @@ export function AiDescriptionButton({
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(
-          (data as { error?: string }).error ?? "AI unavailable"
-        );
+        const errorMsg = (data as { error?: string }).error ?? "AI unavailable";
+        toast.error(errorMsg);
+        return;
       }
 
       const reader = res.body?.getReader();
@@ -50,7 +51,9 @@ export function AiDescriptionButton({
         onGenerated(full);
       }
     } catch {
-      onGenerated("(AI description unavailable — check OPENAI_API_KEY)");
+      toast.error(
+        "Could not generate description. AI service may be temporarily unavailable."
+      );
     } finally {
       setLoading(false);
     }

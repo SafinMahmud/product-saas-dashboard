@@ -39,7 +39,7 @@ cp .env.example .env.local
 | `FIREBASE_PRIVATE_KEY` | Service account JSON `private_key` (keep `\n` escapes) |
 | `GOOGLE_APPLICATION_CREDENTIALS` | **Alternative:** path to service account JSON file (takes precedence) |
 | `ADMIN_EMAILS` | Comma-separated emails that get **admin** role on signup |
-| `OPENAI_API_KEY` | *Optional* — enables AI description and category features |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | *Optional* — enables AI description and category features (free tier: 15 RPM) |
 
 4. Deploy Firestore rules and indexes (optional but recommended):
 
@@ -173,7 +173,7 @@ Single-field indexes are auto-created by Firestore for all fields.
 | **Client Firestore access** | **Denied entirely** — `firestore.rules` blocks all client reads/writes. All data flows through the server API. |
 | **Input validation** | Zod schemas validate all API request bodies server-side. |
 | **Admin assignment** | Only emails in `ADMIN_EMAILS` env var receive admin on signup — not user-selectable. |
-| **AI safety** | AI endpoints require authentication. Gracefully disabled when `OPENAI_API_KEY` is absent (503 with descriptive message). |
+| **AI safety** | AI endpoints require authentication. Gracefully disabled when `GOOGLE_GENERATIVE_AI_API_KEY` is absent (503 with descriptive message). Rate-limit and quota errors return user-friendly messages. |
 
 **Defense in depth:** Viewers cannot create/edit/delete even if they craft direct API requests — the server returns `403 Forbidden`.
 

@@ -25,8 +25,10 @@ export function AiCategoryButton({ name, onSuggested }: AiCategoryButtonProps) {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error ?? "AI unavailable");
+        const data = await res.json().catch(() => ({}));
+        const errorMsg = (data as { error?: string }).error ?? "AI unavailable";
+        toast.error(errorMsg);
+        return;
       }
 
       const data = await res.json();
@@ -35,7 +37,9 @@ export function AiCategoryButton({ name, onSuggested }: AiCategoryButtonProps) {
         toast.info(`Also consider: ${data.alternatives.join(", ")}`);
       }
     } catch {
-      toast.error("AI category suggestion unavailable");
+      toast.error(
+        "Could not suggest category. AI service may be temporarily unavailable."
+      );
     } finally {
       setLoading(false);
     }
