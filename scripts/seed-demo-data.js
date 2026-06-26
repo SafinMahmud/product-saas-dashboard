@@ -58,87 +58,6 @@ function daysAgo(n) {
 
 const DEMO_PRODUCTS = [
   {
-    name: "Wireless Bluetooth Headphones",
-    description:
-      "Premium over-ear headphones with active noise cancellation, 30-hour battery life, and multipoint Bluetooth 5.3 connectivity.",
-    category: "Electronics",
-    price: 79.99,
-    status: "active",
-    createdAt: daysAgo(2),
-  },
-  {
-    name: "Mechanical Keyboard Pro",
-    description:
-      "Compact 75% layout mechanical keyboard with hot-swappable switches, RGB backlighting, and USB-C connection.",
-    category: "Electronics",
-    price: 129.0,
-    status: "active",
-    createdAt: daysAgo(5),
-  },
-  {
-    name: '27" 4K Monitor',
-    description:
-      "Ultra-sharp 4K IPS display with 99% sRGB coverage, height-adjustable stand, and USB-C hub built in.",
-    category: "Electronics",
-    price: 349.99,
-    status: "active",
-    createdAt: daysAgo(12),
-  },
-  {
-    name: "Organic Cotton Hoodie",
-    description:
-      "Soft unisex hoodie made from 100% organic cotton. Relaxed fit with kangaroo pocket and ribbed cuffs.",
-    category: "Clothing",
-    price: 54.5,
-    status: "active",
-    createdAt: daysAgo(8),
-  },
-  {
-    name: "Running Sneakers Lite",
-    description:
-      "Lightweight mesh running shoes with responsive foam midsole and durable rubber outsole for daily training.",
-    category: "Clothing",
-    price: 89.0,
-    status: "inactive",
-    createdAt: daysAgo(20),
-  },
-  {
-    name: "LED Desk Lamp",
-    description:
-      "Adjustable desk lamp with warm-to-cool color temperature, touch dimmer, and USB charging port.",
-    category: "Home & Garden",
-    price: 42.99,
-    status: "active",
-    createdAt: daysAgo(3),
-  },
-  {
-    name: "Ceramic Plant Pot Set",
-    description:
-      "Set of three minimalist ceramic planters with drainage holes and bamboo saucers. Ideal for succulents and herbs.",
-    category: "Home & Garden",
-    price: 28.0,
-    status: "active",
-    createdAt: daysAgo(15),
-  },
-  {
-    name: "Premium Yoga Mat",
-    description:
-      "Non-slip 6mm yoga mat with alignment lines, eco-friendly TPE material, and carrying strap included.",
-    category: "Sports & Outdoors",
-    price: 36.99,
-    status: "active",
-    createdAt: daysAgo(7),
-  },
-  {
-    name: "Adjustable Dumbbell Set",
-    description:
-      "Pair of adjustable dumbbells from 5–25 lbs per hand. Space-saving design for home workouts.",
-    category: "Sports & Outdoors",
-    price: 199.99,
-    status: "inactive",
-    createdAt: daysAgo(30),
-  },
-  {
     name: "Single-Origin Coffee Beans",
     description:
       "Medium roast Arabica beans from Colombia. Notes of chocolate and caramel. 12 oz bag, whole bean.",
@@ -157,40 +76,58 @@ const DEMO_PRODUCTS = [
     createdAt: daysAgo(4),
   },
   {
-    name: "Hydrating Face Moisturizer",
+    name: "Cold Brew Concentrate",
     description:
-      "Daily moisturizer with hyaluronic acid and SPF 30. Lightweight, non-greasy formula for all skin types.",
-    category: "Health & Beauty",
-    price: 24.0,
+      "Ready-to-dilute cold brew coffee concentrate. Smooth, low-acid flavor. Makes 16 servings per bottle.",
+    category: "Food & Beverage",
+    price: 14.99,
     status: "active",
-    createdAt: daysAgo(10),
+    createdAt: daysAgo(2),
   },
   {
-    name: "Clean Code (Paperback)",
+    name: "Artisan Dark Chocolate Bar",
     description:
-      "Classic software craftsmanship guide by Robert C. Martin. Essential reading for professional developers.",
-    category: "Books",
-    price: 34.99,
-    status: "active",
-    createdAt: daysAgo(25),
-  },
-  {
-    name: "Executive Notebook Set",
-    description:
-      "Pack of three A5 hardcover notebooks with dotted pages, elastic closure, and inner pocket.",
-    category: "Office Supplies",
-    price: 18.75,
+      "72% cacao single-origin dark chocolate from Ecuador. Rich, fruity notes with a clean finish.",
+    category: "Food & Beverage",
+    price: 8.5,
     status: "active",
     createdAt: daysAgo(6),
   },
   {
-    name: "USB-C Docking Station",
+    name: "Sparkling Mineral Water (12-pack)",
     description:
-      "12-in-1 hub with dual HDMI, Ethernet, SD card reader, and 100W power delivery passthrough.",
-    category: "Electronics",
-    price: 89.99,
+      "Naturally carbonated mineral water from alpine springs. Zero calories, crisp and refreshing.",
+    category: "Food & Beverage",
+    price: 9.99,
+    status: "active",
+    createdAt: daysAgo(3),
+  },
+  {
+    name: "Honeycrisp Apple Juice",
+    description:
+      "Fresh-pressed juice from Washington Honeycrisp apples. No added sugar or preservatives.",
+    category: "Food & Beverage",
+    price: 6.49,
     status: "inactive",
-    createdAt: daysAgo(18),
+    createdAt: daysAgo(10),
+  },
+  {
+    name: "Matcha Latte Mix",
+    description:
+      "Ceremonial-grade matcha powder blend with oat milk powder. Just add hot water for a café-style latte.",
+    category: "Food & Beverage",
+    price: 18.0,
+    status: "active",
+    createdAt: daysAgo(5),
+  },
+  {
+    name: "Herbal Sleep Tea Blend",
+    description:
+      "Caffeine-free blend of chamomile, lavender, and valerian root. Promotes relaxation before bedtime.",
+    category: "Food & Beverage",
+    price: 11.25,
+    status: "inactive",
+    createdAt: daysAgo(14),
   },
 ];
 

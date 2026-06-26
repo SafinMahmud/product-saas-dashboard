@@ -60,7 +60,7 @@ Open [http://localhost:3000](http://localhost:3000). Sign up with an email liste
 
 ### 4. Seed demo data (optional)
 
-Populate the dashboard with 15 sample products:
+Populate the dashboard with 8 sample Food & Beverage products:
 
 ```bash
 npm run seed
