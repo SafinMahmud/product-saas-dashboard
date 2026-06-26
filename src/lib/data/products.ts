@@ -43,30 +43,52 @@ export async function listProducts(
   } = params;
 
   const db = getAdminDb();
-  let query: Query = db.collection(COLLECTION);
+  const fetchLimit = search ? Math.min(limit * 5, 100) : limit + 1;
 
-  if (category) {
-    query = query.where("category", "==", category);
-  }
-  if (status) {
-    query = query.where("status", "==", status);
-  }
+  let products: Product[];
 
-  // Firestore requires composite indexes when combining inequality + orderBy on different fields.
-  // For search we filter in-memory after fetch when a text query is present.
-  query = query.orderBy(sortBy, sortOrder);
+  try {
+    let query: Query = db.collection(COLLECTION);
 
-  if (cursor) {
-    const cursorDoc = await db.collection(COLLECTION).doc(cursor).get();
-    if (cursorDoc.exists) {
-      query = query.startAfter(cursorDoc);
+    if (category) query = query.where("category", "==", category);
+    if (status) query = query.where("status", "==", status);
+    query = query.orderBy(sortBy, sortOrder);
+
+    if (cursor) {
+      const cursorDoc = await db.collection(COLLECTION).doc(cursor).get();
+      if (cursorDoc.exists) query = query.startAfter(cursorDoc);
+    }
+
+    const snapshot = await query.limit(fetchLimit).get();
+    products = snapshot.docs.map(docToProduct);
+  } catch (err: unknown) {
+    const code = (err as { code?: number }).code;
+    if (code === 9) {
+      // FAILED_PRECONDITION — composite index missing or still building.
+      // Fall back to unfiltered fetch + in-memory filter/sort.
+      const snapshot = await db
+        .collection(COLLECTION)
+        .orderBy("createdAt", "desc")
+        .limit(200)
+        .get();
+
+      let all = snapshot.docs.map(docToProduct);
+      if (category) all = all.filter((p) => p.category === category);
+      if (status) all = all.filter((p) => p.status === status);
+
+      all.sort((a, b) => {
+        const aVal = a[sortBy as keyof Product] ?? "";
+        const bVal = b[sortBy as keyof Product] ?? "";
+        if (aVal < bVal) return sortOrder === "asc" ? -1 : 1;
+        if (aVal > bVal) return sortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+
+      products = all;
+    } else {
+      throw err;
     }
   }
-
-  const fetchLimit = search ? Math.min(limit * 5, 100) : limit + 1;
-  const snapshot = await query.limit(fetchLimit).get();
-
-  let products = snapshot.docs.map(docToProduct);
 
   if (search) {
     const term = search.toLowerCase();
