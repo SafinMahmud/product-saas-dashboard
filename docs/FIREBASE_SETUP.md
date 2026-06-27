@@ -76,6 +76,12 @@ Set admin access (comma-separated emails that get **admin** role on signup):
 ADMIN_EMAILS=your-email@gmail.com
 ```
 
+Optional — enable AI features (descriptions, category suggestions, natural language filtering):
+
+```env
+GROQ_API_KEY=gsk_...   # free key from https://console.groq.com/keys
+```
+
 ## 7. (Optional) Deploy Firestore rules & indexes
 
 Install Firebase CLI once:

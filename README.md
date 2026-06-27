@@ -1,6 +1,6 @@
 # Product SaaS Dashboard
 
-A mini SaaS product management dashboard built for a Senior Full Stack Developer take-home challenge. Authenticated users can manage products, view analytics, and control access based on their role (admin or viewer). Includes AI-powered product descriptions and category suggestions.
+A mini SaaS product management dashboard built for a Senior Full Stack Developer take-home challenge. Authenticated users can manage products, view analytics, and control access based on their role (admin or viewer). Includes AI-powered product descriptions, category suggestions, and natural language dashboard filtering.
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Firebase Auth · Firestore · Tailwind CSS · shadcn/ui · Vercel AI SDK
 
@@ -16,7 +16,7 @@ A mini SaaS product management dashboard built for a Senior Full Stack Developer
 ### 1. Clone and install
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/SafinMahmud/product-saas-dashboard.git
 cd product-saas-dashboard
 npm install
 ```
@@ -81,7 +81,7 @@ npm run seed -- --force
 │                         Browser (React)                          │
 │  AuthProvider · Dashboard UI · Product CRUD forms               │
 │  Firebase Client SDK (sign-in/sign-up only)                     │
-│  AI description streaming · AI category suggestions             │
+│  AI describe · AI categorize · NL dashboard filtering           │
 └───────────────────────────┬─────────────────────────────────────┘
                             │ ID token → POST /api/auth/session
                             │ httpOnly session cookie
@@ -89,7 +89,7 @@ npm run seed -- --force
 │                    Next.js (App Router)                          │
 │  proxy.ts ─── route protection (cookie presence check)          │
 │  API Routes ── session verify + role enforcement                │
-│  /api/ai/* ── Vercel AI SDK → OpenAI (streaming + structured)   │
+│  /api/ai/* ── Vercel AI SDK → Groq (streaming + structured)     │
 │  lib/data/products.ts ── Firestore data access layer            │
 └───────────────────────────┬─────────────────────────────────────┘
                             │ Firebase Admin SDK
